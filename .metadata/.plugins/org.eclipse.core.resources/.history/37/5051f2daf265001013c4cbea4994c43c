@@ -1,0 +1,24 @@
+package add.delete.create;
+
+
+import java.io.File;
+
+public class Create1 {
+	public static void main(String[] args) {
+		try {
+			File newFile1=new File("E:\\achu\\EclipsePractice\\FileDemo.txt");
+			newFile1.createNewFile();
+			if(newFile1.createNewFile()) {
+				System.out.println("The file has been created");
+			}
+			else {
+				System.out.println("File is already there");
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+	}
+
+}

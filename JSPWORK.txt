@@ -1,0 +1,264 @@
+my jsp codes
+
+1)REGISTER.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<title>Register</title>
+</head>
+<body>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+		crossorigin="anonymous"></script>
+	<div class="container w-50 mt-5 pt-5 ">
+		<div class="card">
+			<div
+				class="card-header d-flex justify-content-between align-items-center">
+				<h1>Register Here</h1>
+				<a class="bi bi-table btn btn-info" href="VIEWTRIAL.jsp"></a>
+			</div>
+			<form method="post" action="ACTION_REG.jsp">
+				<div class="card-body">
+				<input class="form-control mb-1" placeholder="Enter your ID"
+						name="userID" type="number" />
+					<input class="form-control mb-1" placeholder="Enter your name"
+						name="userName" type="text" /> <input class="form-control mb-1"
+						placeholder="Enter your age" name="userAge" type="number" />
+						 <input class="form-control mb-1"
+						placeholder="Enter your email" name="userEmail" type="text" />
+				</div>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-primary">Register</button>
+
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
+
+2) ACTION_REG.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		String url = "jdbc:mysql://localhost:3360/db1";
+		String uname = "root";
+		String pass = "root";
+		int id= Integer.parseInt(request.getParameter("userID"));
+		String name = request.getParameter("userName");
+		int age = Integer.parseInt(request.getParameter("userAge"));
+		String email=request.getParameter("userEmail");
+		Connection con = DriverManager.getConnection(url, uname, pass);
+		//String query = "insert into tb1(userID,userName,userAge,userEmail) values('+id+','"+name+"','+age+','"+email+"');";
+		String query = "insert into tb1(userID,userName,userAge,userEmail) values(" 
+               + id + ", '" + name + "', " + age + ", '" + email + "')";
+
+		PreparedStatement ps = con.prepareStatement(query);
+
+		int rowCount = ps.executeUpdate();
+		while (rowCount != 0) {
+			response.sendRedirect("REGISTER.jsp");
+		}
+	} catch (Exception e) {
+		out.println(e);
+	}
+	%>
+</body>
+</html>
+
+3)VIEWTRIAL.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.sql.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>View All Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">All Registered Users</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead >
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Update</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            try {
+                                Class.forName("com.mysql.cj.jdbc.Driver");
+                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3360/db1", "root", "root");
+                                Statement stmt = con.createStatement();
+                                ResultSet rs = stmt.executeQuery("SELECT * FROM tb1");
+
+                                while(rs.next()) {
+                        %>
+                        <tr>
+                            <td><%= rs.getInt("userID") %></td>
+                            <td><%= rs.getString("userName") %></td>
+                            <td><%= rs.getInt("userAge") %></td>
+                            <td><%= rs.getString("userEmail") %></td>
+                            	<!-- <td><button class="btn btn-primary bi bi-pencil">
+								Edit</button></td> -->
+								<td>
+   				 <a href="UPDATE.jsp?userId=<%= rs.getInt("userID") %>" class="btn btn-primary bi bi-pencil"> Edit</a>
+   				 
+</td>
+								
+						<td><button class="btn btn-danger bi bi-trash">
+								Delete</button></td>
+								
+                        </tr>
+                        <%
+                                }
+                                rs.close();
+                                stmt.close();
+                                con.close();
+                            } catch (Exception e) {
+                                out.println("<tr><td colspan='4' class='text-danger'>Error: " + e.getMessage() + "</td></tr>");
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+4)UPDATE.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import ="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<title>Update title here</title>
+</head>
+<body>
+
+	<%
+		try{
+			int id=Integer.parseInt(request.getParameter("userId"));
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			String url ="jdbc:mysql://localhost:3360/db1";
+			String name="root";
+			String pass="root";
+			Connection con = DriverManager.getConnection(url,name,pass);
+			String query = "select * from tb1 where userId = "+id+";";
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			while(rs.next()){
+				%>	
+				<div class="container w-50">
+					<div class="card">
+						<div class="card-header d-flex align-items-center">
+							<a class="btn btn-warning bi bi-arrow-left me-2" href="VIEWTRIAL.jsp"></a>
+							<h2>Update details here</h2>
+						</div>
+						<form action="SAVE_AFTER_EDIT.jsp" method="post">
+						   <div class="card-body">
+							
+								<input type="number" class="form-control mb-1" name="userId" value="<%= rs.getInt("userID") %>" required />
+<input type="text" class="form-control mb-1" name="userName" value="<%= rs.getString("userName") %>" required />
+<input type="number" class="form-control mb-1" name="userAge" value="<%= rs.getInt("userAge") %>" required />
+<input type="text" class="form-control" name="userEmail" value="<%= rs.getString("userEmail") %>" required />
+								
+							
+						  </div>
+						  <div class="card-footer">
+							<button type="submit" class="bi bi-floppy btn btn-success">Save</button>
+						  </div>
+						</form>
+					</div>
+				</div>
+			<%
+			}
+			
+		}		
+		catch(Exception e){
+			out.println(e);
+		}
+	 %>
+
+
+<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+		crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+5)SAVE_AFTER_EDIT.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import ="java.sql.*"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert EDIT here</title>
+</head>
+<body>
+ 	<%
+ 		try{
+ 			int id =Integer.parseInt( request.getParameter("userId"));
+ 			String name =request.getParameter("userName");
+ 			String email =request.getParameter("userEmail");
+ 			int age = Integer.parseInt(request.getParameter("userAge"));
+ 			Class.forName("com.mysql.cj.jdbc.Driver");
+ 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3360/db1","root","root");
+ 			String query ="update tb1 set userName='"+name+"', userAge ="+age+" ,userEmail='"+email+"'  userId = "+id+";";
+ 			PreparedStatement ps = con.prepareStatement(query);
+ 			int rowCount = ps.executeUpdate();
+ 			while(rowCount !=0){
+ 				response.sendRedirect("VIEWTRIAL.jsp");
+ 				
+ 			}
+ 		}catch(Exception e){
+ 			out.println(e);
+ 		}
+ 	%>
+</body>
+</html>

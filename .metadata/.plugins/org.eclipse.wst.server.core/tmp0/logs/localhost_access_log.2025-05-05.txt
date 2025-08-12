@@ -1,0 +1,11 @@
+127.0.0.1 - - [05/May/2025:22:54:16 +0530] "GET / HTTP/1.1" 404 752
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:54:30 +0530] "GET /Demo_MVC/Register.jsp HTTP/1.1" 200 2035
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:54:32 +0530] "GET /favicon.ico HTTP/1.1" 404 763
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:20 +0530] "POST /Demo_MVC/Controller HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/View.jsp HTTP/1.1" 200 3665
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/asasa@g.com.jpg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/sasi@g.com.jpg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/vis@g.com.jpg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/aju@g.com.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/rony@g.com.jpg HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [05/May/2025:22:55:22 +0530] "GET /Demo_MVC/Files/damu@g.com.jpg HTTP/1.1" 304 -
